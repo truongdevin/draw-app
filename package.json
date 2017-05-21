@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon build/server/server.js",
+    "start": "nodemon dist/server.js",
     "build": "concurrently --kill-others \"npm run tsc\" \"npm run webpack\"",
     "tsc": "tsc -w",
     "webpack": "webpack -w",
