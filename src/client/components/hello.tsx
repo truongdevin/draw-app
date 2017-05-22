@@ -21,6 +21,8 @@ export default class Hello extends React.Component<{}, {}> {
         const pos = this.getMousePos(e)
         this.ctx.beginPath()
         this.ctx.moveTo(pos.x, pos.y)
+        this.ctx.lineTo(pos.x, pos.y)
+        this.ctx.stroke()
     }
 
     handleMouseMove = (e) => {
@@ -38,8 +40,8 @@ export default class Hello extends React.Component<{}, {}> {
     getMousePos = (evt) => {
         const rect = this.canvas.getBoundingClientRect()
         return {
-            x: Math.floor(evt.clientX - rect.left),
-            y: Math.floor(evt.clientY - rect.top)
+            x: evt.clientX - rect.left,
+            y: evt.clientY - rect.top
         }
     }
 
