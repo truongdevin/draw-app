@@ -45,11 +45,27 @@ export default class Hello extends React.Component<{}, {}> {
         }
     }
 
+    clearCanvas = () => {
+        this.ctx.clearRect(0, 0, this.width, this.height)
+    }
+
+    eraser = () => {                              
+        this.ctx.globalCompositeOperation = "destination-out"  
+    }
+
+    pencil = () => {
+        this.ctx.globalCompositeOperation = "source-over"
+    }
+
     render() {
         return (
         <div>
             <h1>Draw App</h1>
-            <div className="red">Draw on me!</div>
+            <div>
+                <button className="red" onClick={this.clearCanvas}>Reset</button>
+                <button className="red" onClick={this.eraser}>Eraser</button>
+                <button className="red" onClick={this.pencil}>Pencil</button>
+            </div>
             <canvas 
                 className="whiteboard" 
                 width={`${this.width}px`} 
