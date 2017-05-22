@@ -1,3 +1,11 @@
 .red {
     color: red;
 }
+
+.whiteboard {
+    border: 1px solid black;
+}
+
+.whiteboard:hover {
+    cursor: crosshair;
+}
