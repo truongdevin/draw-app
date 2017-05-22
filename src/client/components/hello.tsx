@@ -6,7 +6,6 @@ export default class Hello extends React.Component<{}, {}> {
     width: number = 500
     height: number = 500
     mouseDown: boolean = false
-    points: {x: number, y: number}[] = []
 
     componentDidMount = () => {
         this.canvas = document.querySelector(".whiteboard") as HTMLCanvasElement
@@ -17,51 +16,30 @@ export default class Hello extends React.Component<{}, {}> {
         this.ctx.lineJoin = "round"
     }
 
-    midpoint = (p1, p2): { x: number, y:number } => {
-        return {
-            x: p1.x + (p2.x - p1.x) / 2,
-            y: p1.y + (p2.y - p1.y) / 2
-        }
-    }
-
     handleMouseDown = (e) => {
         this.mouseDown = true
         const pos = this.getMousePos(e)
-        this.points.push({ x: pos.x, y: pos.y })
+        this.ctx.beginPath()
+        this.ctx.moveTo(pos.x, pos.y)
     }
 
     handleMouseMove = (e) => {
-        // http://perfectionkills.com/exploring-canvas-drawing-techniques/#bezier-curves
         if (this.mouseDown) {
             const pos = this.getMousePos(e)
-            this.points.push({ x: pos.x, y: pos.y })
-            this.ctx.clearRect(0, 0, this.width, this.height)
-            let p1 = this.points[0]
-            let p2 = this.points[1]
-            this.ctx.beginPath()
-            this.ctx.moveTo(p1.x, p1.y)
-
-            for (let i = 1; i < this.points.length; i++) {
-                const midpoint = this.midpoint(p1, p2)
-                this.ctx.quadraticCurveTo(p1.x, p1.y, midpoint.x, midpoint.y)
-                p1 = this.points[i]
-                p2 = this.points[i+1]
-            }
-            this.ctx.lineTo(p1.x, p1.y)
+            this.ctx.lineTo(pos.x, pos.y)
             this.ctx.stroke()
         }
     }
 
     handleMouseUp = (e) => {
         this.mouseDown = false
-        this.points = []
     }
 
     getMousePos = (evt) => {
         const rect = this.canvas.getBoundingClientRect()
         return {
-            x: evt.clientX - rect.left,
-            y: evt.clientY - rect.top
+            x: Math.floor(evt.clientX - rect.left),
+            y: Math.floor(evt.clientY - rect.top)
         }
     }
 
@@ -77,7 +55,7 @@ export default class Hello extends React.Component<{}, {}> {
                 onMouseDown={this.handleMouseDown}
                 onMouseMove={this.handleMouseMove}
                 onMouseUp={this.handleMouseUp} 
-            />
+                />
         </div>
         )
     }
